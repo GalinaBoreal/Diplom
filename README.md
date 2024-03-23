@@ -40,4 +40,9 @@ manage.py createsuperuser
 python manage.py runserver
 ```
     
-   
+### Развертывание проекта с помощью docker-compose :
+
+```bash
+docker-compose build
+docker-compose up -d
+```   
