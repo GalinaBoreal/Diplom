@@ -12,7 +12,16 @@ services:
         env_file:
             - .env
 
-#    redis:
-#        container_name: redis
-#        image: redis:alpine
-#        restart: always
+    redis:
+        image: redis:alpine
+        restart: always
+
+    worker:
+        build: ./
+        hostname: worker
+        entrypoint: celery
+        command: -A celery_app.app worker --loglevel=info
+        volumes:
+            - ./:/app
+        depends_on:
+            - redis
