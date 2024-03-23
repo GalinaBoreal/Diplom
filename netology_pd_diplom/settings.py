@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from pathlib import Path
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -19,10 +24,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '=hs6$#5om031nujz4staql9mbuste=!dc^6)4opsjq!vvjxzj@'
+SECRET_KEY = os.getenv('SECRET_KEY') #'=hs6$#5om031nujz4staql9mbuste=!dc^6)4opsjq!vvjxzj@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG')
 
 ALLOWED_HOSTS = ['*']
 
@@ -108,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ru' #'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow' #'UTC'
 
 USE_I18N = True
 
@@ -129,10 +134,10 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 EMAIL_HOST = 'smtp.mail.ru'
 
-EMAIL_HOST_USER = 'netology.diplom@mail.ru'
-EMAIL_HOST_PASSWORD = 'RANGVKPEZ61jsCgTbsbG'
-EMAIL_PORT = '465'
-EMAIL_USE_SSL = True
+EMAIL_HOST_USER = os.getenv ('EMAIL_HOST_USER') #'netology.diplom@mail.ru'
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD') #'RANGVKPEZ61jsCgTbsbG'
+EMAIL_PORT = os.getenv('EMAIL_PORT') #'465'
+EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', True)
 SERVER_EMAIL = EMAIL_HOST_USER
 
 REST_FRAMEWORK = {

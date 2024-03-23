@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+    web-app:
+        container_name: diplom_app
+        build:
+            context: .
+        ports:
+            - "8000:8000"
+        volumes:
+            - ./:/app
+        env_file:
+            - .env
+
+#    redis:
+#        container_name: redis
+#        image: redis:alpine
+#        restart: always
