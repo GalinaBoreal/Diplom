@@ -8,20 +8,36 @@ services:
         ports:
             - "8000:8000"
         volumes:
-            - ./:/app
+            - .:/app
         env_file:
             - .env
 
     redis:
         image: redis:alpine
+        hostname: redis
         restart: always
 
     worker:
-        build: ./
+        build:
+            context: .
         hostname: worker
         entrypoint: celery
-        command: -A celery_app.app worker --loglevel=info
+        command: -A netology_pd_diplom worker --loglevel=info
         volumes:
-            - ./:/app
+            - .:/app
         depends_on:
+            - web-app
             - redis
+
+    flower:
+        build:
+            context: .
+        hostname: flower
+        entrypoint: celery
+        command: -A netology_pd_diplom flower
+        volumes:
+            - .:/app
+        depends_on:
+          - redis
+        ports:
+          - "5555:5555"

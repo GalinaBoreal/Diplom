@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY') #'=hs6$#5om031nujz4staql9mbuste=!dc^6)4opsjq!vvjxzj@'
+SECRET_KEY = os.getenv('SECRET_KEY')  # '=hs6$#5om031nujz4staql9mbuste=!dc^6)4opsjq!vvjxzj@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG')
@@ -61,8 +61,7 @@ ROOT_URLCONF = 'netology_pd_diplom.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -87,7 +86,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 
-
 }
 
 # Password validation
@@ -111,9 +109,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'ru' #'en-us'
+LANGUAGE_CODE = 'ru'  # 'en-us'
 
-TIME_ZONE = 'Europe/Moscow' #'UTC'
+TIME_ZONE = 'Europe/Moscow'  # 'UTC'
 
 USE_I18N = True
 
@@ -126,7 +124,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-AUTH_USER_MODEL = 'backend.User' #указываем нашу модель вместо поставляемой в "коробке"
+AUTH_USER_MODEL = 'backend.User'  # указываем нашу модель вместо поставляемой в "коробке"
 
 # https://docs.djangoproject.com/en/5.0/topics/email/
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -134,10 +132,10 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 EMAIL_HOST = 'smtp.mail.ru'
 
-EMAIL_HOST_USER = os.getenv ('EMAIL_HOST_USER') #'netology.diplom@mail.ru'
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD') #'RANGVKPEZ61jsCgTbsbG'
-EMAIL_PORT = os.getenv('EMAIL_PORT') #'465'
-EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', True)
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')  # 'netology.diplom@mail.ru'
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')  # 'RANGVKPEZ61jsCgTbsbG'
+EMAIL_PORT = os.getenv('EMAIL_PORT')  # '465'
+EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', default=True)
 SERVER_EMAIL = EMAIL_HOST_USER
 
 REST_FRAMEWORK = {
@@ -159,6 +157,6 @@ REST_FRAMEWORK = {
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', default='redis://localhost:6379/0')
-# CELERY_RESULT_BACKEND
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', default='redis://redis:6379/0')
+CELERY_RESULT_BACKEND = os.getenv('CELERY_BROKER_URL', default='redis://redis:6379/0')
+CELERY_TIMEZONE = "Europe/Moscow"
