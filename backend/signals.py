@@ -30,17 +30,6 @@ def password_reset_token_created(sender, instance, reset_password_token, **kwarg
         message=reset_password_token.key,
         to=[reset_password_token.user.email]
     )
-    # msg = EmailMultiAlternatives(
-    #     # title:
-    #     f"Password Reset Token for {reset_password_token.user}",
-    #     # message:
-    #     reset_password_token.key,
-    #     # from:
-    #     settings.EMAIL_HOST_USER,
-    #     # to:
-    #     [reset_password_token.user.email]
-    # )
-    # msg.send()
 
 
 @receiver(post_save, sender=User)
@@ -52,7 +41,7 @@ def new_user_registered_signal(sender: Type[User], instance: User, created: bool
         # send an e-mail to the user
         token, _ = ConfirmEmailToken.objects.get_or_create(user_id=instance.pk)
         return send_email_task.delay(
-            subject=f"Password Reset Token for {instance.email}",
+            subject=f"Password Email Token for {instance.email}",
             message=token.key,
             to=[instance.email]
         )
@@ -70,15 +59,3 @@ def new_order_signal(user_id, **kwargs):
         message='Заказ сформирован',
         to=[user.email]
     )
-
-    # msg = EmailMultiAlternatives(
-    #     # title:
-    #     f"Обновление статуса заказа",
-    #     # message:
-    #     'Заказ сформирован',
-    #     # from:
-    #     settings.EMAIL_HOST_USER,
-    #     # to:
-    #     [user.email]
-    # )
-    # msg.send()

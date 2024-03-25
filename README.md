@@ -49,4 +49,7 @@ docker-compose up -d
 Подсказки:
 
 [Как установить Docker на Ubuntu](https://help.reg.ru/support/servery-vps/oblachnyye-servery/ustanovka-programmnogo-obespecheniya/kak-ustanovit-docker-na-ubuntu?query=%d0%ba%d0%b0%d0%ba%20%d1%83%d1%81%d1%82%d0%b0%d0%bd%d0%be%d0%b2%d0%b8%d1%82%d1%8c%20docker)
+
 [Как установить и настроить Redis на Linux](https://help.reg.ru/support/servery-vps/oblachnyye-servery/ustanovka-programmnogo-obespecheniya/kak-ustanovit-i-nastroit-redis-na-linux)
+
+[Flower](https://flower.readthedocs.io/en/latest/)

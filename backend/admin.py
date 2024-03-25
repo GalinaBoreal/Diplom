@@ -33,35 +33,17 @@ class ShopAdmin(admin.ModelAdmin):
     )
     list_display = ('name', 'state', 'url')
 
-    # list_display = ('id', 'name', 'url', 'user', 'state')
-    # list_filter = ('state', 'name', 'user')
-    # search_fields = ('name', )
-
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    # pass
     model = Category
-    #
-    # list_display = ('id', 'name')
-    # list_filter = ('name', )
-    # search_fields = ('name', )
+    list_display = ['id', 'name']
 
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    # pass
     model = Product
-    # list_display = ['id', 'name', 'rrc', 'category']
-    # filter_horizontal = ['shops']
-
-    # list_display = ('id', 'name', 'category_id')
-    # list_filter = ('name', )
-    # search_fields = ('name',)
-    # list_display = ('name', 'category', 'shop', 'quantity', 'price', 'price_rrc')
-    # list_filter = ('shop', 'category')
-    # fields = (('shop', 'category'), 'name', 'model', 'external_id', 'quantity', ('price', 'price_rrc'))
-    # readonly_fields = ('category', 'shop')
+    list_display = ['name', 'id', 'category_id']
 
 
 @admin.register(ProductInfo)
@@ -72,7 +54,7 @@ class ProductInfoAdmin(admin.ModelAdmin):
         (None, {'fields': ('product', 'model', 'external_id', 'quantity')}),
         ('Prices', {'fields': ('price', 'price_rrc')}),
     )
-    list_display = ('product', 'external_id', 'price', 'price_rrc', 'quantity')
+    list_display = ('product', 'id', 'external_id', 'price', 'price_rrc', 'quantity')
     ordering = ('external_id',)
 
 
@@ -83,23 +65,27 @@ class ParameterAdmin(admin.ModelAdmin):
 
 @admin.register(ProductParameter)  #
 class ProductParameterAdmin(admin.ModelAdmin):
-    pass
+    model = ProductParameter
+    list_display = ['product_info', 'value']
+
 
 @admin.register(Order)  #
 class OrderAdmin(admin.ModelAdmin):
-    # pass
     model = Order
     fields = ('user', 'state', 'contact')
     list_display = ('id', 'user', 'state', 'dt')
     ordering = ('dt',)
 
+
 @admin.register(OrderItem)  #
 class OrderItemAdmin(admin.ModelAdmin):
     pass
 
+
 @admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):
     list_display = ('id', 'city', 'phone')
+
 
 @admin.register(ConfirmEmailToken)
 class ConfirmEmailTokenAdmin(admin.ModelAdmin):
