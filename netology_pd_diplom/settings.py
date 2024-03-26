@@ -160,3 +160,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', default='redis://redis:6379/0')
 CELERY_RESULT_BACKEND = os.getenv('CELERY_BROKER_URL', default='redis://redis:6379/0')
 CELERY_TIMEZONE = "Europe/Moscow"
+# CELERY_ACCEPT_CONTENT = ['json']
+# CELERY_TASK_SERIALIZER = 'json'
+# 'CELERY_TASK_SERIALIZER': 'pickle',
+# 'CELERY_RESULT_SERIALIZER': 'pickle',
+# 'CELERY_ACCEPT_CONTENT': ['pickle', 'json'],
