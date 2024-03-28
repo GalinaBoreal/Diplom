@@ -53,3 +53,15 @@ docker-compose up -d
 [Как установить и настроить Redis на Linux](https://help.reg.ru/support/servery-vps/oblachnyye-servery/ustanovka-programmnogo-obespecheniya/kak-ustanovit-i-nastroit-redis-na-linux)
 
 [Flower](https://flower.readthedocs.io/en/latest/)
+
+### Тестирование проекта:
+
+```bash
+python manage.py test
+```
+
+### Проверка покрытия проекта тестами:
+
+```bash
+pytest --cov=backend
+```
