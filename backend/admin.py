@@ -1,8 +1,10 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from easy_thumbnails.fields import ThumbnailerField
+from easy_thumbnails.widgets import ImageClearableFileInput
 
 from backend.models import User, Shop, Category, Product, ProductInfo, Parameter, ProductParameter, Order, OrderItem, \
-    Contact, ConfirmEmailToken
+    Contact, ConfirmEmailToken, Image
 
 
 @admin.register(User)
@@ -40,15 +42,30 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ['id', 'name']
 
 
+# @admin.register(Image)
+class ImageInLine(admin.TabularInline):
+    fk_name = 'product'
+    model = Image
+    list_displey = ['image']
+
+    formfield_overrides = {
+        ThumbnailerField: {'widget': ImageClearableFileInput},
+    }
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     model = Product
     list_display = ['name', 'id', 'category_id']
+    inlines = [ImageInLine]
 
 
 @admin.register(ProductInfo)
 class ProductInfoAdmin(admin.ModelAdmin):
     model = ProductInfo
+
+    formfield_overrides = {
+        ThumbnailerField: {'widget': ImageClearableFileInput},
+    }
 
     fieldsets = (
         (None, {'fields': ('product', 'model', 'external_id', 'quantity')}),
@@ -90,3 +107,10 @@ class ContactAdmin(admin.ModelAdmin):
 @admin.register(ConfirmEmailToken)
 class ConfirmEmailTokenAdmin(admin.ModelAdmin):
     list_display = ('user', 'key', 'created_at',)
+
+# @admin.register(PartnerUpdate)
+# class PartnerUpdateAdmin(PartnerUpdate):
+
+# @admin.action(description="Import price")
+# def make_published(PartnerUpdate, request, queryset):
+#     queryset.update(status="p")

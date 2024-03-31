@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'django_rest_passwordreset',
     'social_django',
+    'easy_thumbnails',
 ]
 
 MIDDLEWARE = [
@@ -70,7 +71,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'social_django.context_processors.backends',  # зечем не знаю но для ВК
+                'social_django.context_processors.backends',  # для шаблонов
             ],
         },
     },
@@ -164,6 +165,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SOCIAL_AUTH_VK_OAUTH2_KEY = os.getenv('VK_APP_ID')
 SOCIAL_AUTH_VK_OAUTH2_SECRET = os.getenv('VK_APP_SECRET_KEY')
 
+# # доступ к почте пользователя
+# SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
+# # To avoid this issue define the following setting to circumvent the import error:
+# SOCIAL_AUTH_USER_FIELDS = ['username', 'email', 'first_name', 'last_name']
+
 AUTHENTICATION_BACKENDS = [
     'social_core.backends.vk.VKOAuth2',  # бекенд авторизации через ВКонтакте
     'django.contrib.auth.backends.ModelBackend',
@@ -178,3 +184,12 @@ CELERY_TIMEZONE = "Europe/Moscow"
 # 'CELERY_TASK_SERIALIZER': 'pickle',
 # 'CELERY_RESULT_SERIALIZER': 'pickle',
 # 'CELERY_ACCEPT_CONTENT': ['pickle', 'json'],
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+THUMBNAIL_ALIASES = {
+    '': {
+        'my_preview': {'size': (200, 200), 'crop': 'smart'},
+    },
+}

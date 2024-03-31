@@ -4,6 +4,7 @@ from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django_rest_passwordreset.tokens import get_token_generator
+from easy_thumbnails.fields import ThumbnailerImageField
 
 # https://docs.djangoproject.com/en/5.0/ref/models/fields/#field-choices
 STATE_CHOICES = (
@@ -137,6 +138,7 @@ class Product(models.Model):
     name = models.CharField(max_length=80, verbose_name='Название')
     category = models.ForeignKey(Category, verbose_name='Категория', related_name='products', blank=True,
                                  on_delete=models.CASCADE)
+
     # To define a many-to-one relationship, use ForeignKey
 
     class Meta:
@@ -146,6 +148,17 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Image(models.Model):
+    objects = models.manager.Manager()
+    title = models.CharField(max_length=200, verbose_name='Название')
+    image = ThumbnailerImageField(upload_to='media', blank=True, verbose_name='Миниатюра')
+    product = models.ForeignKey(Product, verbose_name='Продукт', related_name='images', blank=True, null=True,
+                                on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.title
 
 
 class ProductInfo(models.Model):
@@ -237,6 +250,7 @@ class Order(models.Model):
     def __str__(self):
         return str(self.dt)
 
+
 class OrderItem(models.Model):
     objects = models.manager.Manager()
     order = models.ForeignKey(Order, verbose_name='Заказ', related_name='ordered_items', blank=True,
@@ -281,7 +295,7 @@ class ConfirmEmailToken(models.Model):
     key = models.CharField(
         _("Key"),
         max_length=64,
-        db_index=True, #параметр, чтобы создать индекс для поля, по которому совершаете поисковые запросы.
+        db_index=True,  # параметр, чтобы создать индекс для поля, по которому совершаете поисковые запросы.
         unique=True
     )
 
@@ -289,7 +303,7 @@ class ConfirmEmailToken(models.Model):
         if not self.key:
             self.key = self.generate_key()
         return super(ConfirmEmailToken, self).save(*args, **kwargs)
-        #Функция super() в позволяет наследовать базовые классы (они же суперклассы или родительские классы)
+        # Функция super() в позволяет наследовать базовые классы (они же суперклассы или родительские классы)
         # без необходимости явно ссылаться на базовый класс.
 
     def __str__(self):
