@@ -13,7 +13,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from ujson import loads as load_json
 
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
+from drf_spectacular.types import OpenApiTypes
 
 from backend.models import Shop, Category, ProductInfo, Order, OrderItem, Contact, ConfirmEmailToken
 from backend.serializers import UserSerializer, CategorySerializer, ShopSerializer, ProductInfoSerializer, \
@@ -26,7 +27,6 @@ class RegisterAccount(APIView):
     """
     Для регистрации покупателей
     """
-    throttle_scope = 'anon'
 
     # Регистрация методом POST
 
@@ -77,7 +77,6 @@ class ConfirmAccount(APIView):
     """
     Класс для подтверждения почтового адреса
     """
-    throttle_scope = 'anon'
 
     # Регистрация методом POST
     def post(self, request, *args, **kwargs):
@@ -117,7 +116,6 @@ class AccountDetails(APIView):
     Attributes:
     - None
     """
-    throttle_scope = 'user'
 
     # получить данные
     def get(self, request: Request, *args, **kwargs):
@@ -178,7 +176,6 @@ class LoginAccount(APIView):
     """
     Класс для авторизации пользователей
     """
-    throttle_scope = 'anon'
 
     # Авторизация методом POST
     def post(self, request, *args, **kwargs):
@@ -277,7 +274,6 @@ class BasketView(APIView):
     Attributes:
     - None
     """
-    throttle_scope = 'user'
 
     # получить корзину
     def get(self, request, *args, **kwargs):
@@ -415,7 +411,6 @@ class PartnerUpdate(APIView):
     Attributes:
     - None
     """
-    throttle_scope = 'user'
 
     def post(self, request, *args, **kwargs):
         """
@@ -461,7 +456,6 @@ class PartnerState(APIView):
     Attributes:
     - None
     """
-    throttle_scope = 'user'
 
     # получить текущий статус
     def get(self, request, *args, **kwargs):
@@ -521,7 +515,6 @@ class PartnerOrders(APIView):
     Attributes:
     - None
     """
-    throttle_scope = 'user'
 
     def get(self, request, *args, **kwargs):
         """
@@ -562,7 +555,6 @@ class ContactView(APIView):
     Attributes:
     - None
     """
-    throttle_scope = 'user'
 
     # получить мои контакты
     def get(self, request, *args, **kwargs):
@@ -680,7 +672,6 @@ class OrderView(APIView):
     Attributes:
     - None
     """
-    throttle_scope = 'user'
 
     # получить мои заказы
     def get(self, request, *args, **kwargs):
