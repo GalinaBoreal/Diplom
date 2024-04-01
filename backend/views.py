@@ -13,6 +13,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from ujson import loads as load_json
 
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
+from drf_spectacular.types import OpenApiTypes
+
 from backend.models import Shop, Category, ProductInfo, Order, OrderItem, Contact, ConfirmEmailToken
 from backend.serializers import UserSerializer, CategorySerializer, ShopSerializer, ProductInfoSerializer, \
     OrderItemSerializer, OrderSerializer, ContactSerializer
@@ -27,6 +30,10 @@ class RegisterAccount(APIView):
 
     # Регистрация методом POST
 
+    @extend_schema(
+        description='Пример простейшего использования @extend_schema. Process a POST request and create a new user',
+        methods=["POST"],
+    )
     def post(self, request, *args, **kwargs):
         """
             Process a POST request and create a new user.
