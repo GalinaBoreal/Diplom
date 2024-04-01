@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'django_rest_passwordreset',
     'social_django',
     'easy_thumbnails',
-    'drf_spectacular'
 ]
 
 MIDDLEWARE = [
@@ -156,18 +155,10 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
         # 'drf_social_oauth2.authentication.SocialAuthentication',
     ),
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+
 }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-SPECTACULAR_SETTINGS = {
-    'TITLE': 'API Сервис ззаказов товаров для розничной сети.',
-    'DESCRIPTION': 'Приложение предназначено для автоматизации закупок в розничной сети через REST APII.',
-    'VERSION': '1.0.0',
-    'SERVE_INCLUDE_SCHEMA': False,
-    # OTHER SETTINGS
-}
 
 # Обязательно добавьте localhost в список базовых доменов (для проверки)
 # Для проверки разверните свой проект на http://localhost:80
