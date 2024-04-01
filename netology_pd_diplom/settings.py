@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django_rest_passwordreset',
     'social_django',
     'easy_thumbnails',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -144,6 +145,7 @@ SERVER_EMAIL = EMAIL_HOST_USER
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 40,
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
@@ -155,6 +157,14 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
         # 'drf_social_oauth2.authentication.SocialAuthentication',
     ),
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '100/day',
+        'user': '1000/day'
+    }
 
 }
 
@@ -192,4 +202,11 @@ THUMBNAIL_ALIASES = {
     '': {
         'my_preview': {'size': (200, 200), 'crop': 'smart'},
     },
+}
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'API Сервис заказа товаров для розничных сетей',
+    'DESCRIPTION': 'Приложение предназначено для автоматизации закупок в розничной сети через REST API.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # OTHER SETTINGS
 }
