@@ -19,18 +19,23 @@ from django.conf import settings
 from django.conf.urls.static import static
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
+from backend.views import Shop_errorView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-# YOUR PATTERNS
+    # Автосгенерированная документации, YOUR PATTERNS
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-    # Optional UI:
+    # Автосгенерированная документации, Optional UI:
     path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    # Для авторизации через VK
     path('', include('social_django.urls', namespace='social')),
-    path('api/v1/', include('backend.urls', namespace='backend'))
+    # Визуализация мониторинга sentry
+    path('sentry-debug/', Shop_errorView.as_view(), name='shops_error'),
+    path('api/v1/', include('backend.urls', namespace='backend')),
+    # Пакет django-silk, возможность анализа быстродейтвия проекта
+    path('silk/', include('silk.urls', namespace='silk')),
 ]
-#
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-

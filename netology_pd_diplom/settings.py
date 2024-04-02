@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-from pathlib import Path
+import sentry_sdk
 
 from dotenv import load_dotenv
 
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'social_django',
     'easy_thumbnails',
     'drf_spectacular',
+    'silk',
 ]
 
 MIDDLEWARE = [
@@ -57,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'silk.middleware.SilkyMiddleware',
 ]
 
 ROOT_URLCONF = 'netology_pd_diplom.urls'
@@ -162,8 +164,8 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.UserRateThrottle'
     ],
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '100/day',
-        'user': '1000/day'
+        'anon': '1000/day',
+        'user': '10000/day'
     }
 
 }
@@ -189,11 +191,6 @@ AUTHENTICATION_BACKENDS = [
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', default='redis://redis:6379/0')
 CELERY_RESULT_BACKEND = os.getenv('CELERY_BROKER_URL', default='redis://redis:6379/0')
 CELERY_TIMEZONE = "Europe/Moscow"
-# CELERY_ACCEPT_CONTENT = ['json']
-# CELERY_TASK_SERIALIZER = 'json'
-# 'CELERY_TASK_SERIALIZER': 'pickle',
-# 'CELERY_RESULT_SERIALIZER': 'pickle',
-# 'CELERY_ACCEPT_CONTENT': ['pickle', 'json'],
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
@@ -203,6 +200,7 @@ THUMBNAIL_ALIASES = {
         'my_preview': {'size': (200, 200), 'crop': 'smart'},
     },
 }
+
 SPECTACULAR_SETTINGS = {
     'TITLE': 'API Сервис заказа товаров для розничных сетей',
     'DESCRIPTION': 'Приложение предназначено для автоматизации закупок в розничной сети через REST API.',
@@ -210,3 +208,17 @@ SPECTACULAR_SETTINGS = {
     'SERVE_INCLUDE_SCHEMA': False,
     # OTHER SETTINGS
 }
+
+sentry_sdk.init(
+    dsn=os.getenv(
+        'SENTRY_DSN',
+        default="https://e37bce7786d7ea3eea5504a624ef0ae1@o4507015538606080.ingest.us.sentry.io/4507017269215232"
+    ),
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    traces_sample_rate=1.0,
+    # Set profiles_sample_rate to 1.0 to profile 100%
+    # of sampled transactions.
+    # We recommend adjusting this value in production.
+    profiles_sample_rate=1.0,
+)

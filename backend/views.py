@@ -220,6 +220,13 @@ class ShopView(ListAPIView):
     queryset = Shop.objects.filter(state=True)
     serializer_class = ShopSerializer
 
+class Shop_errorView(ListAPIView):
+    """
+    Класс для просмотра списка магазинов
+    """
+    queryset = Shop.objects.filter(state=True)
+    # AssertionError: 'Shop_errorView' should either include a `serializer_class` attribute,
+    # or override the `get_serializer_class()` method.
 
 class ProductInfoView(APIView):
     """
