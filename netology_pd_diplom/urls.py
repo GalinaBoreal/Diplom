@@ -22,6 +22,8 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, Spec
 from backend.views import Shop_errorView
 
 urlpatterns = [
+    # Тюнинг админки django-jet-reboot
+    path('jet/', include('jet.urls', 'jet')),
     path('admin/', admin.site.urls),
     # Автосгенерированная документации, YOUR PATTERNS
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
