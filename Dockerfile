@@ -12,6 +12,6 @@ RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 EXPOSE 8000
 
-RUN python manage.py migrate --run-syncdb
+RUN python3 manage.py migrate --run-syncdb
 
 CMD python3 manage.py runserver 0.0.0.0:8000
