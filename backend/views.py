@@ -17,7 +17,7 @@ from drf_spectacular.utils import extend_schema
 from backend.models import Shop, Category, ProductInfo, Order, OrderItem, Contact, ConfirmEmailToken
 from backend.serializers import UserSerializer, CategorySerializer, ShopSerializer, ProductInfoSerializer, \
     OrderItemSerializer, OrderSerializer, ContactSerializer
-from backend.signals import new_user_registered, new_order
+from backend.signals import new_order
 from backend.tasks import update_price
 
 
@@ -222,11 +222,12 @@ class ShopView(ListAPIView):
 
 class Shop_errorView(ListAPIView):
     """
-    Класс для просмотра списка магазинов
+    Класс для создания исключения, которое перехватит sentry
     """
     queryset = Shop.objects.filter(state=True)
     # AssertionError: 'Shop_errorView' should either include a `serializer_class` attribute,
     # or override the `get_serializer_class()` method.
+
 
 class ProductInfoView(APIView):
     """

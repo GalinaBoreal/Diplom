@@ -4,8 +4,7 @@ from django.conf import settings
 from requests import get
 from yaml import load as load_yaml, Loader
 
-from .models import Category, Parameter, ProductParameter, Product, ProductInfo, Shop
-
+from backend.models import Category, Parameter, ProductParameter, Product, ProductInfo, Shop
 
 @shared_task
 def send_email_task(subject, message, to):

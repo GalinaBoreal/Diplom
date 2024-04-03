@@ -6,6 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from django_rest_passwordreset.tokens import get_token_generator
 from easy_thumbnails.fields import ThumbnailerImageField
 
+
 # https://docs.djangoproject.com/en/5.0/ref/models/fields/#field-choices
 STATE_CHOICES = (
     ('basket', 'Статус корзины'),
