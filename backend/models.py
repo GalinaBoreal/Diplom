@@ -4,8 +4,8 @@ from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django_rest_passwordreset.tokens import get_token_generator
-from easy_thumbnails.fields import ThumbnailerImageField
 
+from backend.tasks import get_product_preview, get_user_preview
 
 # https://docs.djangoproject.com/en/5.0/ref/models/fields/#field-choices
 STATE_CHOICES = (
@@ -92,9 +92,24 @@ class User(AbstractUser):
         ),
     )
     type = models.CharField(verbose_name='Тип пользователя', choices=USER_TYPE_CHOICES, max_length=5, default='buyer')
+    image = models.ImageField(upload_to='user', blank=True, verbose_name='Аватарка')
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
+
+    def save(self, *args, **kwargs):
+        """
+        Сохранение изображения с удалением предыдущего
+        изображения и одновременной генерацией миниатюры
+        """
+        if self.pk is not None:
+            old_self = User.objects.get(pk=self.pk)
+            if old_self.image and self.image != old_self.image:
+                old_self.image.delete(False)
+            super(User, self).save(*args, **kwargs)
+            if self.image:
+                # генерация отдельных миниатюр с сохранением основного изображения
+                get_user_preview.delay(self.image.path)
 
     # https://docs.djangoproject.com/en/5.0/ref/models/options/
     class Meta:
@@ -139,6 +154,7 @@ class Product(models.Model):
     name = models.CharField(max_length=80, verbose_name='Название')
     category = models.ForeignKey(Category, verbose_name='Категория', related_name='products', blank=True,
                                  on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='product', blank=True, verbose_name='Изображение')
 
     # To define a many-to-one relationship, use ForeignKey
 
@@ -150,16 +166,20 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
-
-class Image(models.Model):
-    objects = models.manager.Manager()
-    title = models.CharField(max_length=200, verbose_name='Название')
-    image = ThumbnailerImageField(upload_to='media', blank=True, verbose_name='Миниатюра')
-    product = models.ForeignKey(Product, verbose_name='Продукт', related_name='images', blank=True, null=True,
-                                on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.title
+    def save(self, *args, **kwargs):
+        """
+        Сохранение изображения с удалением предыдущего
+        изображения и одновременной генерацией миниатюры
+        """
+        if self.pk is not None:
+            old_self = Product.objects.get(pk=self.pk)
+            if old_self.image and self.image != old_self.image:
+                old_self.image.delete(False)
+                # удаление миниатюр python3 manage.py thumbnail_cleanup
+        super(Product, self).save(*args, **kwargs)
+        if self.image:
+            # генерация отдельных миниатюр с сохранением основного изображения
+            get_product_preview.delay(self.image.path)
 
 
 class ProductInfo(models.Model):

@@ -1,7 +1,12 @@
 # Верстальщик
+# from django.core.files.storage import FileSystemStorage
+# from django.core.files import File
+# from pathlib import Path
 from rest_framework import serializers
 
 from .models import User, Category, Shop, ProductInfo, Product, ProductParameter, OrderItem, Order, Contact
+# from backend.tasks import upload
+
 
 
 class ContactSerializer(serializers.ModelSerializer):
@@ -19,7 +24,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'last_name', 'email', 'company', 'position', 'contacts')
+        fields = ('id', 'first_name', 'last_name', 'email', 'company', 'position', 'contacts', 'image')
         read_only_fields = ('id',)
 
 

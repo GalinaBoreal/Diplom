@@ -1,33 +1,6 @@
 from django.test import TestCase
-from django.core.files import File
 
 from backend.models import Parameter
-from backend.models import Image
-
-
-class ImageModelTest(TestCase):
-
-    def test_image_model_save_and_retrive(self):
-        image1 = Image(
-            title='image1',
-            image=File(open('test_images/image1.jpeg', 'rb'))
-        )
-        image1.save()
-
-        image2 = Image(
-            title='image2',
-            image=File(open('test_images/image2.jpeg', 'rb'))
-        )
-        image2.save()
-
-        all_images = Image.objects.all()
-        self.assertEqual(len(all_images), 2)
-        self.assertEqual(
-            all_images[0].title, image1.title
-        )
-        self.assertEqual(
-            all_images[1].title, image2.title
-        )
 
 
 class ParameterModelTest(TestCase):

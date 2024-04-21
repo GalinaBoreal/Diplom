@@ -1,10 +1,40 @@
 from celery import shared_task
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
+from easy_thumbnails.files import get_thumbnailer
 from requests import get
 from yaml import load as load_yaml, Loader
+# from PIL import Image
 
-from backend.models import Category, Parameter, ProductParameter, Product, ProductInfo, Shop
+from backend.models import *
+
+
+@shared_task
+def get_user_preview(path):
+    """
+    Celery task to generating thumbnails.
+    Alias specified in the settings.py.
+    """
+    thumbnailer = get_thumbnailer(path)
+    thumbnailer['user_preview']
+
+
+@shared_task
+def get_product_preview(path):
+    """
+    Celery task to generating thumbnails.
+    Alias specified in the settings.py.
+    """
+    thumbnailer = get_thumbnailer(path)
+    thumbnailer['product_preview']
+
+
+# @shared_task
+# def update_image(path):
+#     image = Image.open(path)
+#     output_size = (100, 100)
+#     image.thumbnail(output_size)
+#     image.save(path)
 
 @shared_task
 def send_email_task(subject, message, to):
@@ -26,6 +56,9 @@ def send_email_task(subject, message, to):
 
 @shared_task()
 def update_price(url, user_id):
+    """
+    Celery task to update price list.
+    """
     stream = get(url).content
 
     data = load_yaml(stream, Loader=Loader)

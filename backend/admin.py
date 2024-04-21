@@ -1,10 +1,11 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.utils.safestring import mark_safe
 from easy_thumbnails.fields import ThumbnailerField
 from easy_thumbnails.widgets import ImageClearableFileInput
 
 from backend.models import User, Shop, Category, Product, ProductInfo, Parameter, ProductParameter, Order, OrderItem, \
-    Contact, ConfirmEmailToken, Image
+    Contact, ConfirmEmailToken
 
 
 @admin.register(User)
@@ -16,13 +17,25 @@ class CustomUserAdmin(UserAdmin):
 
     fieldsets = (
         (None, {'fields': ('email', 'password', 'type')}),
-        ('Personal info', {'fields': ('first_name', 'last_name', 'company', 'position')}),
+        ('Personal info', {'fields': ('first_name', 'last_name', 'company', 'position', 'image')}),
         ('Permissions', {
             'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
         }),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )
-    list_display = ('email', 'first_name', 'last_name', 'is_staff')
+    list_display = ('email', 'first_name', 'last_name', 'is_staff', 'preview')
+    readonly_fields = ['preview']
+
+    def preview(self, obj):
+        """
+        Предпросмотр аватарки пользователя
+        """
+        if obj.image:
+            name = obj.image.name
+            miniature = '/media/' + name + '.80x80_q85_crop-smart.jpg'
+            return mark_safe(f'<img src="{miniature}">')
+        else:
+            return
 
 
 @admin.register(Shop)
@@ -42,21 +55,22 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ['id', 'name']
 
 
-# @admin.register(Image)
-class ImageInLine(admin.TabularInline):
-    fk_name = 'product'
-    model = Image
-    list_displey = ['image']
-
-    formfield_overrides = {
-        ThumbnailerField: {'widget': ImageClearableFileInput},
-    }
-
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     model = Product
-    list_display = ['name', 'id', 'category_id']
-    inlines = [ImageInLine]
+    list_display = ['name', 'id', 'category_id', 'preview', 'image']
+    readonly_fields = ['preview']
+
+    def preview(self, obj):
+        """
+        Предпросмотр аватарки пользователя
+        """
+        if obj.image:
+            name = obj.image.name
+            miniature = '/media/' + name + '.100x100_q85_crop-smart.jpg'
+            return mark_safe(f'<img src="{miniature}">')
+        else:
+            return
 
 
 @admin.register(ProductInfo)

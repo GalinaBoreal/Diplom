@@ -165,8 +165,8 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.UserRateThrottle'
     ],
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '100/day',
-        'user': '1000/day'
+        'anon': '1000/day',
+        'user': '10000/day'
     }
 
 }
@@ -198,7 +198,8 @@ MEDIA_URL = '/media/'
 
 THUMBNAIL_ALIASES = {
     '': {
-        'my_preview': {'size': (200, 200), 'crop': 'smart'},
+        'product_preview': {'size': (100, 100), 'crop': 'smart'},
+        'user_preview': {'size': (80, 80), 'crop': 'smart'},
     },
 }
 
